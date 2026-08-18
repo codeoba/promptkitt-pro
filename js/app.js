@@ -77,19 +77,43 @@ class PromptKittApp {
 
   updateNavLinks() {
     document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
-    if (this.currentRoute === 'home') document.getElementById('navHome')?.classList.add('active');
-    else if (this.currentRoute === 'explore') document.getElementById('navExplore')?.classList.add('active');
-    else if (this.currentRoute === 'workflows' || this.currentRoute === 'chains') document.getElementById('navWorkflows')?.classList.add('active');
-    else if (this.currentRoute === 'arena') document.getElementById('navArena')?.classList.add('active');
-    else if (this.currentRoute === 'playground') document.getElementById('navPlayground')?.classList.add('active');
-    else if (this.currentRoute === 'optimizer') document.getElementById('navOptimizer')?.classList.add('active');
-    else if (this.currentRoute === 'developer' || this.currentRoute === 'api') document.getElementById('navDeveloper')?.classList.add('active');
-    else if (this.currentRoute === 'categories') document.getElementById('navCategories')?.classList.add('active');
-    else if (this.currentRoute === 'goals') document.getElementById('navGoals')?.classList.add('active');
-    else if (this.currentRoute === 'bounties') document.getElementById('navBounties')?.classList.add('active');
-    else if (this.currentRoute === 'profile') document.getElementById('navProfile')?.classList.add('active');
-    else if (this.currentRoute === 'settings') document.getElementById('navSettings')?.classList.add('active');
-    else if (this.currentRoute === 'select') document.getElementById('navSelect')?.classList.add('active');
+    document.querySelectorAll('.mobile-nav-item').forEach(el => el.classList.remove('active'));
+
+    const r = this.currentRoute;
+    if (r === 'home') {
+      document.getElementById('navHome')?.classList.add('active');
+      document.getElementById('mobNavHome')?.classList.add('active');
+    } else if (r === 'explore') {
+      document.getElementById('navExplore')?.classList.add('active');
+      document.getElementById('mobNavExplore')?.classList.add('active');
+    } else if (r === 'workflows' || r === 'chains') {
+      document.getElementById('navWorkflows')?.classList.add('active');
+      document.getElementById('mobNavWorkflows')?.classList.add('active');
+    } else if (r === 'arena') {
+      document.getElementById('navArena')?.classList.add('active');
+      document.getElementById('mobNavArena')?.classList.add('active');
+    } else if (r === 'playground') {
+      document.getElementById('navPlayground')?.classList.add('active');
+      document.getElementById('mobNavPlayground')?.classList.add('active');
+    } else if (r === 'library') {
+      document.getElementById('mobNavLibrary')?.classList.add('active');
+    } else if (r === 'optimizer') {
+      document.getElementById('navOptimizer')?.classList.add('active');
+    } else if (r === 'developer' || r === 'api') {
+      document.getElementById('navDeveloper')?.classList.add('active');
+    } else if (r === 'categories') {
+      document.getElementById('navCategories')?.classList.add('active');
+    } else if (r === 'goals') {
+      document.getElementById('navGoals')?.classList.add('active');
+    } else if (r === 'bounties') {
+      document.getElementById('navBounties')?.classList.add('active');
+    } else if (r === 'profile') {
+      document.getElementById('navProfile')?.classList.add('active');
+    } else if (r === 'settings') {
+      document.getElementById('navSettings')?.classList.add('active');
+    } else if (r === 'select') {
+      document.getElementById('navSelect')?.classList.add('active');
+    }
   }
 
   updateCounters() {
@@ -4228,10 +4252,10 @@ class PromptKittApp {
           </div>
 
           <!-- Side-by-Side Outputs -->
-          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 24px;">
+          <div class="arena-battle-grid">
             <!-- Output A -->
             <div style="background: var(--bg-primary); border-radius: var(--radius-md); overflow: hidden; border: 2px solid ${userVote === 'A' ? 'var(--accent-emerald)' : 'var(--border-subtle)'};">
-              <div style="height: 320px; position: relative;">
+              <div class="arena-candidate-media" style="height: 320px; position: relative;">
                 <img src="${currentMatch.promptA.preview}" style="width: 100%; height: 100%; object-fit: cover;" alt="Candidate A">
                 <span class="nav-pill-badge" style="position: absolute; top: 12px; left: 12px; background: rgba(0,0,0,0.8); backdrop-filter: blur(8px); color: #fff; font-size: 0.9rem; font-weight: 900;">
                   CANDIDATE A
@@ -4247,7 +4271,7 @@ class PromptKittApp {
 
             <!-- Output B -->
             <div style="background: var(--bg-primary); border-radius: var(--radius-md); overflow: hidden; border: 2px solid ${userVote === 'B' ? 'var(--accent-emerald)' : 'var(--border-subtle)'};">
-              <div style="height: 320px; position: relative;">
+              <div class="arena-candidate-media" style="height: 320px; position: relative;">
                 <img src="${currentMatch.promptB.preview}" style="width: 100%; height: 100%; object-fit: cover;" alt="Candidate B">
                 <span class="nav-pill-badge" style="position: absolute; top: 12px; left: 12px; background: rgba(0,0,0,0.8); backdrop-filter: blur(8px); color: #fff; font-size: 0.9rem; font-weight: 900;">
                   CANDIDATE B
@@ -4264,7 +4288,7 @@ class PromptKittApp {
 
           <!-- Voting Action Buttons -->
           ${!userVote ? `
-            <div style="display: flex; justify-content: center; gap: 14px; flex-wrap: wrap;">
+            <div class="arena-voting-actions" style="display: flex; justify-content: center; gap: 14px; flex-wrap: wrap;">
               <button class="btn btn-primary btn-lg" onclick="app.handleArenaVote('${currentMatch.id}', 'A')">
                 <i class="ph-bold ph-trophy"></i> Vote Candidate A is Better
               </button>
@@ -4298,25 +4322,26 @@ class PromptKittApp {
                 <th>ELO Rating</th>
                 <th>Win Rate</th>
                 <th>Arena Matches</th>
-                <th>Mastery Tier</th>
-                <th>Action</th>
+                <th>Specialization</th>
+                <th>Profile</th>
               </tr>
             </thead>
             <tbody>
               ${leaderboard.map(u => `
                 <tr>
-                  <td style="font-weight: 900; font-size: 1.1rem; color: ${u.rank === 1 ? '#f59e0b' : u.rank === 2 ? '#cbd5e1' : u.rank === 3 ? '#d97706' : 'var(--text-muted)'};">
-                    #${u.rank}
+                  <td><span class="user-rank-number ${u.rank <= 3 ? 'top' : ''}">#${u.rank}</span></td>
+                  <td>
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                      <img src="${u.avatar}" class="creator-avatar-sm" alt="${u.name}">
+                      <div>
+                        <div style="font-weight: 700;">${u.name}</div>
+                        <div style="font-size: 0.78rem; color: var(--text-muted);">@${u.username}</div>
+                      </div>
+                    </div>
                   </td>
-                  <td style="font-weight: 700;">
-                    <div>${u.name}</div>
-                    <span style="font-size: 0.75rem; color: var(--text-muted);">@${u.username}</span>
-                  </td>
-                  <td style="font-family: var(--font-mono); font-weight: 900; color: var(--accent-cyan); font-size: 1.05rem;">
-                    ${u.elo}
-                  </td>
-                  <td style="font-weight: 800; color: var(--accent-emerald);">${u.winRate}</td>
-                  <td>${u.totalBattles}</td>
+                  <td><span class="elo-score-badge">${u.elo} ELO</span></td>
+                  <td><strong style="color: var(--accent-emerald);">${u.winRate}</strong></td>
+                  <td style="color: var(--text-secondary);">${u.matches}</td>
                   <td><span class="nav-pill-badge">${u.badge}</span></td>
                   <td>
                     <button class="btn btn-sm btn-secondary" onclick="app.navigate('profile')">View Prompts</button>
@@ -4353,7 +4378,7 @@ class PromptKittApp {
           </div>
         </div>
 
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 30px;">
+        <div class="optimizer-grid">
           <!-- Left: Verbose Input -->
           <div class="settings-card">
             <h3 style="font-size: 1.05rem; font-weight: 800; margin-bottom: 12px; display: flex; justify-content: space-between;">
