@@ -1,0 +1,714 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="obsidian">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PromptKitt Pro - Next-Gen AI Prompt Marketplace, Creator Economy & Sandbox</title>
+  <meta name="description" content="The world's most advanced AI prompt marketplace, variable sandbox, and creator economy for Midjourney, FLUX.1, ChatGPT-4o, Claude 3.5, Gemini 2.0 and more.">
+  
+  <!-- Modern Typography from Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Outfit:wght@500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- Phosphor Icons -->
+  <script src="https://unpkg.com/@phosphor-icons/web"></script>
+  
+  <!-- Styles -->
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+  <!-- Top Role Switcher & Live Theme Toolbar -->
+  <div class="dev-toolbar">
+    <div class="dev-toolbar-left">
+      <span class="dev-badge"><i class="ph-bold ph-sparkle"></i> PromptKitt Pro v2.5</span>
+      <div class="role-switcher">
+        <button class="role-btn active" id="roleBtnBuyer" onclick="app.switchRole('buyer')"><i class="ph-bold ph-shopping-bag"></i> Buyer Mode</button>
+        <button class="role-btn" id="roleBtnSeller" onclick="app.switchRole('seller')"><i class="ph-bold ph-storefront"></i> Seller Studio</button>
+        <button class="role-btn" id="roleBtnAdmin" onclick="app.switchRole('admin')"><i class="ph-bold ph-shield-check"></i> Super Admin</button>
+      </div>
+    </div>
+    <div class="dev-toolbar-right">
+      <span style="font-size: 0.78rem;"><i class="ph-bold ph-paint-brush"></i> Theme:</span>
+      <select class="theme-pill-select" id="themeSelect" onchange="app.switchTheme(this.value)">
+        <option value="obsidian">🌌 Obsidian Dark (Default)</option>
+        <option value="cyberpunk">⚡ Cyberpunk Neon</option>
+        <option value="aurora">✨ Aurora Glow</option>
+        <option value="light">☀️ Light Quartz</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- Main Site Navigation (2 Rows for Maximum Clarity & Aesthetics) -->
+  <header class="site-header">
+    <!-- Row 1: Logo, Search Bar, and Action Icons & Profile -->
+    <div class="header-top-row">
+      <div class="container header-top-inner">
+        <!-- Logo (Left) -->
+        <a href="#home" class="brand-logo" onclick="app.navigate('home')">
+          <div class="logo-icon-wrap">
+            <i class="ph-fill ph-cat"></i>
+          </div>
+          <span>PromptKitt<span class="brand-pro-badge">PRO</span></span>
+        </a>
+
+        <!-- Search Bar (Center) -->
+        <div class="nav-search-bar">
+          <i class="ph-bold ph-magnifying-glass nav-search-icon"></i>
+          <input type="text" id="globalNavSearch" class="nav-search-input" placeholder="Search 20,000+ AI prompts, models, systems..." oninput="app.handleSearchInput(this.value)">
+        </div>
+
+        <!-- Action Buttons & Profile Avatar (Right) -->
+        <div class="nav-actions" id="navActionsContainer">
+          <!-- Rendered dynamically by app.updateHeaderAuth() -->
+        </div>
+      </div>
+    </div>
+
+    <!-- Row 2: Menu Contents / Navigation Links -->
+    <div class="header-bottom-row">
+      <div class="container header-bottom-inner">
+        <ul class="nav-links">
+          <li class="nav-item active" id="navHome"><a href="#home" onclick="app.navigate('home')"><i class="ph-bold ph-compass"></i> Discover</a></li>
+          <li class="nav-item" id="navExplore"><a href="#explore" onclick="app.navigate('explore')"><i class="ph-bold ph-grid-four"></i> Marketplace</a></li>
+          <li class="nav-item" id="navWorkflows"><a href="#workflows" onclick="app.navigate('workflows')"><i class="ph-bold ph-git-commit"></i> Agent Chains <span class="nav-pill-badge" style="background: rgba(99,102,241,0.2); color: var(--accent-primary);">NEW</span></a></li>
+          <li class="nav-item" id="navArena"><a href="#arena" onclick="app.navigate('arena')"><i class="ph-bold ph-sword"></i> Prompt Arena <span class="nav-pill-badge" style="background: rgba(244,63,94,0.2); color: #f43f5e;">ELO</span></a></li>
+          <li class="nav-item" id="navPlayground"><a href="#playground" onclick="app.navigate('playground')"><i class="ph-bold ph-flask"></i> 4-Grid Sandbox</a></li>
+          <li class="nav-item" id="navOptimizer"><a href="#optimizer" onclick="app.navigate('optimizer')"><i class="ph-bold ph-lightning"></i> Cost Optimizer</a></li>
+          <li class="nav-item" id="navDeveloper"><a href="#developer" onclick="app.navigate('developer')"><i class="ph-bold ph-code"></i> Developer API</a></li>
+          <li class="nav-item" id="navBounties"><a href="#bounties" onclick="app.navigate('bounties')"><i class="ph-bold ph-trophy"></i> Bounties</a></li>
+          <li class="nav-item" id="navSelect"><a href="#select" onclick="app.navigate('select')"><i class="ph-bold ph-crown" style="color: #f59e0b;"></i> Select VIP</a></li>
+        </ul>
+      </div>
+    </div>
+  </header>
+
+  <!-- App Views Container (SPA Content) -->
+  <main id="appContent">
+    <!-- Rendered dynamically by js/app.js -->
+  </main>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <a href="#home" class="brand-logo" onclick="app.navigate('home')">
+            <div class="logo-icon-wrap"><i class="ph-fill ph-cat"></i></div>
+            <span>PromptKitt<span class="brand-pro-badge">PRO</span></span>
+          </a>
+          <p>The premier global marketplace and interactive sandbox for world-class AI engineers, prompt architects, and digital creators.</p>
+          <div style="display: flex; gap: 12px; margin-top: 16px;">
+            <a href="#" class="icon-btn"><i class="ph-bold ph-x-logo"></i></a>
+            <a href="#" class="icon-btn"><i class="ph-bold ph-discord-logo"></i></a>
+            <a href="#" class="icon-btn"><i class="ph-bold ph-github-logo"></i></a>
+          </div>
+        </div>
+
+        <div>
+          <h4 class="footer-col-title">Marketplace</h4>
+          <ul class="footer-links">
+            <li><a href="#explore" onclick="app.filterByModel('midjourney')">Midjourney Prompts</a></li>
+            <li><a href="#explore" onclick="app.filterByModel('flux')">FLUX.1 Pro Prompts</a></li>
+            <li><a href="#explore" onclick="app.filterByModel('claude')">Claude 3.5 Sonnet Prompts</a></li>
+            <li><a href="#explore" onclick="app.filterByModel('chatgpt')">ChatGPT-4o Prompts</a></li>
+            <li><a href="#categories" onclick="app.navigate('categories')">All Categories</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 class="footer-col-title">Account & Studio</h4>
+          <ul class="footer-links">
+            <li><a href="#profile" onclick="app.navigate('profile')">My Public Profile</a></li>
+            <li><a href="#settings" onclick="app.navigate('settings')">Account Settings</a></li>
+            <li><a href="#library" onclick="app.navigate('library')">Digital Vault</a></li>
+            <li><a href="#seller-dashboard" onclick="app.switchRole('seller')">Seller Studio</a></li>
+            <li><a href="#select" onclick="app.navigate('select')">Select VIP Membership</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 class="footer-col-title">Platform & Trust</h4>
+          <ul class="footer-links">
+            <li><a href="#" onclick="app.openModal('kycModal')">Identity & KYC Verification</a></li>
+            <li><a href="#" onclick="app.showToast('All purchases backed by 14-day Prompt Quality Guarantee.', 'success')">14-Day Guarantee</a></li>
+            <li><a href="#" onclick="app.openModal('refundModal')">Disputes & Refunds</a></li>
+            <li><a href="#" onclick="app.showToast('API integrations with Stripe, PayPal, Razorpay & Paddle active.', 'success')">Secure Payments</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <span>&copy; 2026 PromptKitt Pro. Next-Generation AI Prompt Platform. All rights reserved.</span>
+        <span>Built with Precision, Glassmorphism & High-Performance Architecture.</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- =========================================================================
+       Drawers & Modals
+       ========================================================================= -->
+
+  <!-- Authentication Modal (Sign In / Register) -->
+  <div class="modal-backdrop" id="authModal">
+    <div class="modal-box" style="max-width: 480px;">
+      <div class="modal-header">
+        <div style="display: flex; gap: 16px; align-items: center;">
+          <button type="button" class="auth-tab-btn active" id="authTabLogin" onclick="app.switchAuthTab('login')">Sign In</button>
+          <button type="button" class="auth-tab-btn" id="authTabRegister" onclick="app.switchAuthTab('register')">Create Account</button>
+        </div>
+        <button class="icon-btn btn-sm" onclick="app.closeModal('authModal')"><i class="ph-bold ph-x"></i></button>
+      </div>
+      <div class="modal-body">
+        <!-- Quick Social OAuth -->
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px;">
+          <button class="btn btn-secondary btn-sm" onclick="app.handleSocialAuth('Google')">
+            <i class="ph-bold ph-google-logo" style="color: #ea4335;"></i> Google
+          </button>
+          <button class="btn btn-secondary btn-sm" onclick="app.handleSocialAuth('GitHub')">
+            <i class="ph-bold ph-github-logo"></i> GitHub
+          </button>
+        </div>
+
+        <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 20px;">
+          <div style="flex: 1; height: 1px; background: var(--border-subtle);"></div>
+          <span style="font-size: 0.78rem; color: var(--text-muted); text-transform: uppercase;">Or with email</span>
+          <div style="flex: 1; height: 1px; background: var(--border-subtle);"></div>
+        </div>
+
+        <!-- Login Form -->
+        <form id="loginForm" onsubmit="app.handleLoginSubmit(event)">
+          <div class="form-group">
+            <label class="form-label">Email Address</label>
+            <input type="email" class="form-input" id="loginEmail" placeholder="jordan@promptkitt.io" value="jordan@promptkitt.io" required>
+          </div>
+          <div class="form-group">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+              <label class="form-label">Password</label>
+              <a href="#" style="font-size: 0.78rem; color: var(--accent-primary);" onclick="app.showToast('Reset password link sent to your email.', 'success')">Forgot Password?</a>
+            </div>
+            <input type="password" class="form-input" id="loginPassword" value="password123" required>
+          </div>
+          <button type="submit" class="btn btn-primary btn-lg" style="width: 100%; margin-top: 10px;">
+            <i class="ph-bold ph-sign-in"></i> Sign In to PromptKitt
+          </button>
+        </form>
+
+        <!-- Register Form -->
+        <form id="registerForm" style="display: none;" onsubmit="app.handleRegisterSubmit(event)">
+          <div class="form-group">
+            <label class="form-label">Full Name</label>
+            <input type="text" class="form-input" id="regName" placeholder="Elena Rostova" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Username</label>
+            <input type="text" class="form-input" id="regUsername" placeholder="elena_ai" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Email Address</label>
+            <input type="email" class="form-input" id="regEmail" placeholder="elena@domain.com" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Password</label>
+            <input type="password" class="form-input" id="regPassword" placeholder="••••••••" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">I want to primarily:</label>
+            <select class="form-select" id="regRole">
+              <option value="buyer">Buy & Discover Master Prompts</option>
+              <option value="seller">Sell & Monetize AI Prompts (Creator)</option>
+            </select>
+          </div>
+          <button type="submit" class="btn btn-primary btn-lg" style="width: 100%; margin-top: 10px;">
+            <i class="ph-bold ph-user-plus"></i> Create Free Account (100⚡ Free)
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Shopping Cart Drawer -->
+  <div class="drawer-backdrop" id="cartDrawerBackdrop" onclick="app.closeDrawers()"></div>
+  <div class="drawer-pane" id="cartDrawer">
+    <div class="drawer-header">
+      <h3 style="font-family: var(--font-display); font-weight: 800; font-size: 1.25rem; display: flex; align-items: center; gap: 8px;">
+        <i class="ph-bold ph-shopping-cart-simple" style="color: var(--accent-primary);"></i> Your Cart
+      </h3>
+      <button class="icon-btn btn-sm" onclick="app.closeDrawers()"><i class="ph-bold ph-x"></i></button>
+    </div>
+    <div class="drawer-body" id="cartDrawerItems"></div>
+    <div class="drawer-footer" id="cartDrawerFooter"></div>
+  </div>
+
+  <!-- Direct Chat Drawer -->
+  <div class="drawer-backdrop" id="chatDrawerBackdrop" onclick="app.closeDrawers()"></div>
+  <div class="drawer-pane" id="chatDrawer" style="width: 480px;">
+    <div class="drawer-header">
+      <div style="display: flex; align-items: center; gap: 10px;">
+        <img id="chatHeaderAvatar" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80" style="width: 36px; height: 36px; border-radius: var(--radius-full);" alt="Avatar">
+        <div>
+          <h4 id="chatHeaderName" style="font-size: 0.95rem; font-weight: 700;">Alex Rivers (Neural Alchemist)</h4>
+          <span style="font-size: 0.75rem; color: var(--accent-emerald);">● Online (Fast Responder)</span>
+        </div>
+      </div>
+      <button class="icon-btn btn-sm" onclick="app.closeDrawers()"><i class="ph-bold ph-x"></i></button>
+    </div>
+    <div class="drawer-body" id="chatMessagesContainer" style="display: flex; flex-direction: column; gap: 12px;"></div>
+    <div class="drawer-footer" style="padding: 14px;">
+      <form onsubmit="app.handleSendChatMessage(event)" style="display: flex; gap: 10px;">
+        <input type="text" id="chatInputBox" class="var-input-field" style="flex: 1; border-radius: var(--radius-full); padding: 10px 18px;" placeholder="Type your question for seller...">
+        <button type="submit" class="btn btn-primary btn-sm"><i class="ph-bold ph-paper-plane-right"></i></button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Notification Drawer -->
+  <div class="drawer-backdrop" id="notifDrawerBackdrop" onclick="app.closeDrawers()"></div>
+  <div class="drawer-pane" id="notifDrawer">
+    <div class="drawer-header">
+      <h3 style="font-family: var(--font-display); font-weight: 800; font-size: 1.2rem; display: flex; align-items: center; gap: 8px;">
+        <i class="ph-bold ph-bell" style="color: var(--accent-secondary);"></i> Notifications
+      </h3>
+      <button class="icon-btn btn-sm" onclick="app.closeDrawers()"><i class="ph-bold ph-x"></i></button>
+    </div>
+    <div class="drawer-body" id="notifDrawerItems"></div>
+  </div>
+
+  <!-- Multi-Gateway Checkout Modal -->
+  <div class="modal-backdrop" id="checkoutModal">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3 class="modal-title"><i class="ph-bold ph-lock-key" style="color: var(--accent-emerald);"></i> Secure Checkout</h3>
+        <button class="icon-btn btn-sm" onclick="app.closeModal('checkoutModal')"><i class="ph-bold ph-x"></i></button>
+      </div>
+      <div class="modal-body" id="checkoutModalBody"></div>
+    </div>
+  </div>
+
+  <!-- Prompt Remix & Fork Modal -->
+  <div class="modal-backdrop" id="remixModal">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3 class="modal-title"><i class="ph-bold ph-git-fork" style="color: var(--accent-purple);"></i> Remix & Fork Prompt</h3>
+        <button class="icon-btn btn-sm" onclick="app.closeModal('remixModal')"><i class="ph-bold ph-x"></i></button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label class="form-label">Base Prompt to Fork:</label>
+          <select class="form-select" id="remixSourceSelect" onchange="app.handleRemixSourceChange(this.value)">
+            <!-- Populated -->
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Remixed & Customized Template:</label>
+          <textarea class="form-textarea" id="remixTemplateInput" style="min-height: 120px;"></textarea>
+        </div>
+        <div class="modal-footer-actions">
+          <button type="button" class="btn-cancel" onclick="app.closeModal('remixModal')"><i class="ph-bold ph-x"></i> Cancel</button>
+          <button type="button" class="btn-submit" onclick="app.saveRemixedPrompt()"><i class="ph-bold ph-check"></i> Save Forked Prompt</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Seller Multi-Step Prompt Creator Wizard Modal -->
+  <div class="modal-backdrop" id="promptWizardModal">
+    <div class="modal-box" style="max-width: 740px;">
+      <div class="modal-header">
+        <h3 class="modal-title"><i class="ph-bold ph-magic-wand" style="color: var(--accent-primary);"></i> Prompt Creator Studio Wizard</h3>
+        <button class="icon-btn btn-sm" onclick="app.closeModal('promptWizardModal')"><i class="ph-bold ph-x"></i></button>
+      </div>
+      <div class="modal-body">
+        <form onsubmit="app.handleWizardSubmit(event)">
+          <div class="form-group">
+            <label class="form-label">Prompt Title</label>
+            <input type="text" class="form-input" id="wizTitle" placeholder="e.g. Ultra-Realistic 8K Studio Cyberpunk Fashion Portrait" required>
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+            <div class="form-group">
+              <label class="form-label">Target AI Model Engine</label>
+              <select class="form-select" id="wizModel">
+                <option value="midjourney">Midjourney</option>
+                <option value="flux">FLUX</option>
+                <option value="claude">Claude</option>
+                <option value="chatgpt">ChatGPT</option>
+                <option value="gemini">Gemini</option>
+                <option value="stablediffusion">Stable Diffusion</option>
+                <option value="agent-skills">Agent Workflows</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Category</label>
+              <select class="form-select" id="wizCategory">
+                <option value="photorealistic">Photorealistic Portraits</option>
+                <option value="cyberpunk-3d">3D & Cyberpunk Art</option>
+                <option value="code-dev">Full-Stack Architecture</option>
+                <option value="marketing-copy">High-Converting Copy</option>
+                <option value="logo-branding">Vector Logo & Brand Kits</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Price ($ USD) - Enter 0.00 for Free</label>
+            <input type="number" step="0.01" min="0" class="form-input" id="wizPrice" value="4.99" required>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Master Prompt Template (Use [variable] tags)</label>
+            <textarea class="form-textarea" id="wizTemplate" placeholder="Award-winning photograph of [subject], wearing [wardrobe], [lighting] --ar 16:9 --v 6.1 --style raw" required></textarea>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Cover Image URL</label>
+            <input type="url" class="form-input" id="wizCover" value="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=800&auto=format&fit=crop&q=80">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Usage Instructions & Recommended Settings</label>
+            <textarea class="form-textarea" id="wizInstructions" placeholder="Recommended settings: Stylize 250, Aspect Ratio 16:9, Step 28..."></textarea>
+          </div>
+
+          <div class="modal-footer-actions">
+            <button type="button" class="btn-cancel" onclick="app.closeModal('promptWizardModal')"><i class="ph-bold ph-x"></i> Cancel</button>
+            <button type="submit" class="btn-submit"><i class="ph-bold ph-paper-plane-tilt"></i> Submit for Review & Publish</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- KYC Verification Modal -->
+  <div class="modal-backdrop" id="kycModal">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3 class="modal-title"><i class="ph-bold ph-identification-badge" style="color: var(--accent-cyan);"></i> Seller Identity & KYC Verification</h3>
+        <button class="icon-btn btn-sm" onclick="app.closeModal('kycModal')"><i class="ph-bold ph-x"></i></button>
+      </div>
+      <div class="modal-body">
+        <div style="background: rgba(16,185,129,0.1); border: 1px solid var(--accent-emerald); border-radius: var(--radius-md); padding: 14px; margin-bottom: 20px; color: var(--accent-emerald); font-size: 0.9rem; display: flex; align-items: center; gap: 10px;">
+          <i class="ph-fill ph-check-circle" style="font-size: 1.4rem;"></i>
+          <span><strong>Status: Certified Tier-2 Verified Seller</strong><br>You are cleared for unlimited instant prompt sales & payouts.</span>
+        </div>
+
+        <form onsubmit="app.handleKycSubmit(event)">
+          <div class="form-group">
+            <label class="form-label">Full Legal Name</label>
+            <input type="text" class="form-input" value="Jordan Sterling" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Country of Residence</label>
+            <input type="text" class="form-input" value="United States" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Government ID Type</label>
+            <select class="form-select">
+              <option>Passport / International ID</option>
+              <option>National Driver's License</option>
+              <option>State ID Card</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">ID Document Uploaded</label>
+            <div style="padding: 16px; border: 1px dashed var(--border-glow); border-radius: var(--radius-md); text-align: center; color: var(--text-secondary); font-size: 0.85rem;">
+              <i class="ph-bold ph-file-check" style="font-size: 1.8rem; color: var(--accent-emerald); display: block; margin-bottom: 6px;"></i>
+              passport_scan_verified_2026.pdf (Encrypted & Stored Securely)
+            </div>
+          </div>
+          <div class="modal-footer-actions">
+            <button type="button" class="btn-cancel" onclick="app.closeModal('kycModal')"><i class="ph-bold ph-x"></i> Close</button>
+            <button type="submit" class="btn-submit"><i class="ph-bold ph-shield-check"></i> Update Verification</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Payout Request & Settings Modal -->
+  <div class="modal-backdrop" id="payoutModal">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3 class="modal-title"><i class="ph-bold ph-bank" style="color: var(--accent-emerald);"></i> Seller Payout Withdrawal</h3>
+        <button class="icon-btn btn-sm" onclick="app.closeModal('payoutModal')"><i class="ph-bold ph-x"></i></button>
+      </div>
+      <div class="modal-body">
+        <div style="background: var(--bg-card); padding: 18px; border-radius: var(--radius-md); border: 1px solid var(--border-subtle); margin-bottom: 20px;">
+          <span style="font-size: 0.82rem; color: var(--text-muted); text-transform: uppercase;">Available Pending Payout</span>
+          <div id="payoutModalBalance" style="font-family: var(--font-display); font-size: 2.2rem; font-weight: 900; color: var(--accent-emerald);">$640.00</div>
+        </div>
+
+        <form onsubmit="app.handlePayoutSubmit(event)">
+          <div class="form-group">
+            <label class="form-label">Withdrawal Amount ($ USD)</label>
+            <input type="number" step="0.01" min="10" class="form-input" id="payoutAmountInput" value="640.00" required>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Payout Method</label>
+            <select class="form-select" id="payoutMethodSelect">
+              <option value="PayPal">PayPal (Instant transfer to account email)</option>
+              <option value="Bank Wire">International Bank Wire (SWIFT / IBAN)</option>
+              <option value="Stripe Connect">Stripe Connect Direct Payout</option>
+              <option value="Crypto USDT">Crypto USDT (TRC-20 / Polygon)</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Account / Wallet Details</label>
+            <input type="text" class="form-input" id="payoutDetailsInput" value="jordan@promptkitt.io" required>
+          </div>
+
+          <div class="modal-footer-actions">
+            <button type="button" class="btn-cancel" onclick="app.closeModal('payoutModal')"><i class="ph-bold ph-x"></i> Cancel</button>
+            <button type="submit" class="btn-submit"><i class="ph-bold ph-paper-plane-tilt"></i> Submit Withdrawal Request</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Seller Coupon Creator Modal -->
+  <div class="modal-backdrop" id="couponModal">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3 class="modal-title"><i class="ph-bold ph-ticket" style="color: var(--accent-secondary);"></i> Create Custom Seller Coupon</h3>
+        <button class="icon-btn btn-sm" onclick="app.closeModal('couponModal')"><i class="ph-bold ph-x"></i></button>
+      </div>
+      <div class="modal-body">
+        <form onsubmit="app.handleCreateCouponSubmit(event)">
+          <div class="form-group">
+            <label class="form-label">Coupon Code (e.g. SUMMER25)</label>
+            <input type="text" class="form-input" id="newCouponCode" placeholder="PROMO25" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Discount Percentage (%)</label>
+            <input type="number" min="5" max="90" class="form-input" id="newCouponDiscount" value="25" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Maximum Redemptions / Uses</label>
+            <input type="number" min="1" class="form-input" id="newCouponMaxUses" value="100" required>
+          </div>
+          <div class="modal-footer-actions">
+            <button type="button" class="btn-cancel" onclick="app.closeModal('couponModal')"><i class="ph-bold ph-x"></i> Cancel</button>
+            <button type="submit" class="btn-submit"><i class="ph-bold ph-plus"></i> Create Coupon</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Creator Tip Jar Modal -->
+  <div class="modal-backdrop" id="tipModal">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3 class="modal-title"><i class="ph-bold ph-heart" style="color: var(--accent-rose);"></i> Send Creator Tip</h3>
+        <button class="icon-btn btn-sm" onclick="app.closeModal('tipModal')"><i class="ph-bold ph-x"></i></button>
+      </div>
+      <div class="modal-body">
+        <p style="color: var(--text-secondary); margin-bottom: 20px;">Support your favorite AI prompt architect directly! 100% of your tip goes to the creator.</p>
+        <div style="display: flex; gap: 10px; margin-bottom: 20px;">
+          <button class="btn btn-secondary" style="flex: 1;" onclick="document.getElementById('tipAmountInput').value = '5.00'">$5</button>
+          <button class="btn btn-secondary" style="flex: 1;" onclick="document.getElementById('tipAmountInput').value = '10.00'">$10</button>
+          <button class="btn btn-secondary" style="flex: 1;" onclick="document.getElementById('tipAmountInput').value = '25.00'">$25</button>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Custom Amount ($ USD)</label>
+          <input type="number" step="1" min="1" class="form-input" id="tipAmountInput" value="5.00">
+        </div>
+        <div class="modal-footer-actions">
+          <button type="button" class="btn-cancel" onclick="app.closeModal('tipModal')"><i class="ph-bold ph-x"></i> Cancel</button>
+          <button type="button" class="btn-submit" onclick="app.handleSendTip()"><i class="ph-bold ph-heart"></i> Send Tip</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Add Review & Rating Modal -->
+  <div class="modal-backdrop" id="reviewModal">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3 class="modal-title"><i class="ph-bold ph-star" style="color: var(--accent-amber);"></i> Write a Community Review</h3>
+        <button class="icon-btn btn-sm" onclick="app.closeModal('reviewModal')"><i class="ph-bold ph-x"></i></button>
+      </div>
+      <div class="modal-body">
+        <form onsubmit="app.handleReviewSubmit(event)">
+          <input type="hidden" id="reviewPromptId">
+          <div class="form-group">
+            <label class="form-label">Your Star Rating</label>
+            <select class="form-select" id="reviewRatingSelect">
+              <option value="5">⭐⭐⭐⭐⭐ (5/5) Exceptional Quality</option>
+              <option value="4">⭐⭐⭐⭐ (4/5) Very Good</option>
+              <option value="3">⭐⭐⭐ (3/5) Average</option>
+              <option value="2">⭐⭐ (2/5) Needs Improvement</option>
+              <option value="1">⭐ (1/5) Poor</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Your Review & Output Feedback</label>
+            <textarea class="form-textarea" id="reviewCommentInput" placeholder="Share your generation experience, favorite settings, and results..." required></textarea>
+          </div>
+          <div class="modal-footer-actions">
+            <button type="button" class="btn-cancel" onclick="app.closeModal('reviewModal')"><i class="ph-bold ph-x"></i> Cancel</button>
+            <button type="submit" class="btn-submit"><i class="ph-bold ph-check"></i> Post Review</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Request Refund Modal -->
+  <div class="modal-backdrop" id="refundModal">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3 class="modal-title"><i class="ph-bold ph-arrow-counter-clockwise" style="color: var(--accent-rose);"></i> Request a Refund</h3>
+        <button class="icon-btn btn-sm" onclick="app.closeModal('refundModal')"><i class="ph-bold ph-x"></i></button>
+      </div>
+      <div class="modal-body">
+        <p style="color: var(--text-secondary); margin-bottom: 20px;">Every purchase is backed by our 14-Day Prompt Quality Guarantee.</p>
+        <form onsubmit="app.handleRefundSubmit(event)">
+          <div class="form-group">
+            <label class="form-label">Reason for Refund Request</label>
+            <select class="form-select" id="refundReasonSelect">
+              <option>Prompt output does not match advertised quality</option>
+              <option>Incompatible with latest AI model version</option>
+              <option>Accidental duplicate order</option>
+              <option>Other technical issue</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Additional Details / Logs</label>
+            <textarea class="form-textarea" id="refundNotesInput" placeholder="Please describe what occurred..." required></textarea>
+          </div>
+          <div class="modal-footer-actions">
+            <button type="button" class="btn-cancel" onclick="app.closeModal('refundModal')"><i class="ph-bold ph-x"></i> Cancel</button>
+            <button type="submit" class="btn-submit"><i class="ph-bold ph-shield-warning"></i> Submit Dispute</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Post Custom Bounty Modal -->
+  <div class="modal-backdrop" id="postBountyModal">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3 class="modal-title"><i class="ph-bold ph-trophy" style="color: #f59e0b;"></i> Post a Custom Prompt Bounty</h3>
+        <button class="icon-btn btn-sm" onclick="app.closeModal('postBountyModal')"><i class="ph-bold ph-x"></i></button>
+      </div>
+      <div class="modal-body">
+        <form onsubmit="app.handlePostBountySubmit(event)">
+          <div class="form-group">
+            <label class="form-label">Bounty Title / Core Requirement</label>
+            <input type="text" class="form-input" id="bountyTitleInput" placeholder="e.g. Consistent Character Sheet in FLUX.1 Pro across 6 camera angles" required>
+          </div>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+            <div class="form-group">
+              <label class="form-label">Reward Bounty Budget ($ USD)</label>
+              <input type="number" step="5" min="20" class="form-input" id="bountyBudgetInput" value="50.00" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Target Model Engine</label>
+              <select class="form-select" id="bountyModelInput">
+                <option>Midjourney</option>
+                <option>FLUX</option>
+                <option>Claude</option>
+                <option>ChatGPT</option>
+                <option>Stable Diffusion</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Detailed Prompt Specifications & Requirements</label>
+            <textarea class="form-textarea" id="bountyDescInput" placeholder="Specify exact camera positions, resolution requirements, parameter bounds, seed constraints..." required></textarea>
+          </div>
+          <div class="modal-footer-actions">
+            <button type="button" class="btn-cancel" onclick="app.closeModal('postBountyModal')"><i class="ph-bold ph-x"></i> Cancel</button>
+            <button type="submit" class="btn-submit"><i class="ph-bold ph-trophy"></i> Post Bounty ($50+)</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Submit Solution for Bounty Modal -->
+  <div class="modal-backdrop" id="submitBountySolutionModal">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3 class="modal-title"><i class="ph-bold ph-paper-plane-tilt" style="color: var(--accent-emerald);"></i> Submit Your Bounty Solution</h3>
+        <button class="icon-btn btn-sm" onclick="app.closeModal('submitBountySolutionModal')"><i class="ph-bold ph-x"></i></button>
+      </div>
+      <div class="modal-body">
+        <form onsubmit="app.handleSubmitBountySolution(event)">
+          <input type="hidden" id="targetBountyId">
+          <div class="form-group">
+            <label class="form-label">Your Master Prompt Template</label>
+            <textarea class="form-textarea" id="bountySolutionTemplate" placeholder="Enter your working solution template with tags and variables..." required></textarea>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Sample Output Image / Artifact URL</label>
+            <input type="url" class="form-input" id="bountySolutionImage" value="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=600&auto=format&fit=crop&q=80">
+          </div>
+          <div class="modal-footer-actions">
+            <button type="button" class="btn-cancel" onclick="app.closeModal('submitBountySolutionModal')"><i class="ph-bold ph-x"></i> Cancel</button>
+            <button type="submit" class="btn-submit"><i class="ph-bold ph-check"></i> Submit Proposal</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Admin AI Studio Automated Batch Generation Modal -->
+  <div class="modal-backdrop" id="aiStudioBatchModal">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3 class="modal-title"><i class="ph-bold ph-cpu" style="color: var(--accent-purple);"></i> Admin AI Studio - Batch Prompt Publisher</h3>
+        <button class="icon-btn btn-sm" onclick="app.closeModal('aiStudioBatchModal')"><i class="ph-bold ph-x"></i></button>
+      </div>
+      <div class="modal-body">
+        <p style="color: var(--text-secondary); margin-bottom: 18px;">
+          Automatically synthesize, test, and publish master prompt suites using autonomous AI sessions.
+        </p>
+        <form onsubmit="app.handleAiStudioBatchSubmit(event)">
+          <div class="form-group">
+            <label class="form-label">Niche / Theme Generation Target</label>
+            <input type="text" class="form-input" id="aiStudioNiche" value="Ultra-Realistic Cinematic Cyberpunk Vehicle Macros" required>
+          </div>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+            <div class="form-group">
+              <label class="form-label">Quantity to Generate</label>
+              <select class="form-select" id="aiStudioCount">
+                <option value="5">5 Master Prompts</option>
+                <option value="10">10 Master Prompts</option>
+                <option value="25">25 Master Prompts</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Model Engine</label>
+              <select class="form-select" id="aiStudioModel">
+                <option value="flux">FLUX</option>
+                <option value="midjourney">Midjourney</option>
+                <option value="claude">Claude</option>
+                <option value="chatgpt">ChatGPT</option>
+              </select>
+            </div>
+          </div>
+          <div class="modal-footer-actions">
+            <button type="button" class="btn-cancel" onclick="app.closeModal('aiStudioBatchModal')"><i class="ph-bold ph-x"></i> Cancel</button>
+            <button type="submit" class="btn-submit"><i class="ph-bold ph-sparkle"></i> Launch Batch Auto-Publisher</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Container -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <!-- JavaScript Modules -->
+  <script src="js/data.js"></script>
+  <script src="js/store.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
