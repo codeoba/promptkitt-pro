@@ -472,8 +472,14 @@ img {
   font-weight: 700;
   border: 1px solid var(--border-glow);
 }
-  color: #fff;
-  font-size: 0.7rem;
+
+.icon-badge-counter {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  background: var(--accent-cyan);
+  color: #000;
+  font-size: 0.72rem;
   font-weight: 800;
   width: 19px;
   height: 19px;
@@ -497,16 +503,6 @@ img {
   letter-spacing: 0.2px;
   transition: all var(--transition-normal);
   white-space: nowrap;
-.btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  padding: 10px 22px;
-  border-radius: var(--radius-md);
-  font-weight: 700;
-  font-size: 0.9rem;
-  transition: all var(--transition-fast);
   border: none;
   outline: none;
   cursor: pointer;
