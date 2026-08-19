@@ -2516,7 +2516,7 @@ img {
   .admin-layout { grid-template-columns: 1fr; }
 }
 
-/* /* Mobile Devices Breakpoint (< 768px) */
+/* Mobile Devices Breakpoint (< 768px) */
 @media (max-width: 768px) {
   body {
     overflow-x: hidden !important;
